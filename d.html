@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#08141a" />
+  <title>CarbonChainX • AI Carbon Footprint Tracker — Redesigned</title>
+
+  <!-- Fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Lottie player -->
+  <script defer src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+  <style>
+    :root{
+      --bg-1: #071018;    /* deep */
+      --bg-2: #082034;    /* softer */
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --accent-a: #2fe6c8;
+      --accent-b: #2ac6ff;
+      --muted: rgba(255, 255, 255, 0.951);
+      --muted-2: rgba(255,255,255,0.75);
+      --card-shadow: 0 14px 40px rgba(2,6,23,0.65);
+      --radius: 14px;
+      --gap: 16px;
+      --max-w: 1180px;
+      --mobile-break: 820px;
+      --glass-border: rgba(255,255,255,0.04);
+    }
+
+    /* Reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--muted);
+      background: radial-gradient(900px 400px at 12% 8%, rgba(42,198,255,0.03), transparent),
+                  linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      overflow-y:auto; -webkit-overflow-scrolling:touch;
+    }
+
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    /* Container */
+    .wrap{max-width:var(--max-w); margin:0 auto; padding:28px; width:100%}
+
+    /* Top nav */
+    nav{
+      position:fixed; left:0; right:0; top:14px; z-index:60;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 20px; gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      margin-inline:auto; max-width:calc(var(--max-w) + 56px);
+      border-radius:14px; box-shadow:var(--card-shadow); backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;color:var(--accent-a)}
+    .brand .logo{
+      width:48px;height:48px;border-radius:12px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--accent-a),var(--accent-b)); color:#002025;font-weight:900;font-size:20px;
+      box-shadow:0 10px 30px rgba(42,198,255,0.12);
+    }
+
+    .nav-links{display:flex; gap:14px; align-items:center}
+    .nav-links a{padding:8px 12px;border-radius:10px;font-weight:700; font-size:0.95rem}
+    .nav-links a:hover{background:rgba(255,255,255,0.03); color:var(--accent-b)}
+
+    .hamburger{display:none; background:transparent;border:0;color:var(--muted);font-size:20px;padding:8px;border-radius:10px}
+
+    /* Hero */
+    header.hero{ padding-top:110px; padding-bottom:36px; display:grid; grid-template-columns:1fr; gap:22px; align-items:center; min-height:calc(100vh - 120px);}
+
+    .hero-inner{
+      display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;padding:22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px; box-shadow:var(--card-shadow); padding:28px; backdrop-filter:blur(8px);
+      transition:transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .35s ease;
+    }
+    .hero-inner[data-visible="false"]{opacity:0; transform:translateY(18px) scale(.995)}
+    .hero-inner[data-visible="true"]{opacity:1; transform:none}
+
+    .hero-eyebrow{font-size:0.92rem; font-weight:700; color:var(--accent-b); letter-spacing:0.6px}
+    .hero-title{
+      font-size:clamp(1.7rem, 4.6vw, 2.8rem); line-height:1.02; font-weight:900;
+      background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); -webkit-background-clip:text; color:transparent;
+      letter-spacing:-0.6px; margin:0;
+      text-wrap:balance;
+    }
+    .hero-sub{max-width:720px; font-size:1rem; color:var(--muted-2)}
+
+    .hero-cta{display:flex; gap:12px; flex-wrap:wrap; justify-content:center}
+    .btn{display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer; padding:12px 18px; border-radius:999px; font-weight:800; font-size:0.98rem; background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:#001018; box-shadow: 0 14px 36px rgba(42,198,255,0.12); transition:transform .18s ease, box-shadow .18s ease;}
+    .btn.secondary{background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.05); box-shadow:none}
+    .btn.ghost{background:transparent;border:1px dashed rgba(255,255,255,0.04); color:var(--muted-2)}
+    .btn:active{transform:translateY(1px)}
+    .btn:focus{outline:3px solid rgba(42,198,255,0.12); outline-offset:3px}
+
+    /* hero media */
+    .hero-media{width:100%; max-width:540px; margin-top:8px; border-radius:16px; overflow:hidden; display:flex;justify-content:center; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow:0 12px 34px rgba(2,6,23,0.5); padding:12px}
+    .hero-media .lottie{width:100%; height:340px; max-height:420px}
+
+    /* feature grid */
+    .features{display:grid; gap:14px; margin-top:18px; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); width:100%;}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:16px; border-radius:12px; text-align:left; display:flex; gap:12px; align-items:flex-start; box-shadow:0 8px 24px rgba(2,6,23,0.55); transition:transform .25s cubic-bezier(.2,.9,.2,1), box-shadow .25s ease; border:1px solid var(--glass-border)}
+    .card:hover{transform:translateY(-10px) rotateX(3deg); box-shadow:0 20px 50px rgba(42,198,255,0.08)}
+    .card .ico{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent-b),var(--accent-a)); color:#001018; font-weight:900}
+    .card h4{margin:0; font-size:1.02rem; font-weight:800}
+    .card p{margin:6px 0 0 0; font-size:0.95rem; color:var(--muted-2)}
+
+    /* CTA strip */
+    .cta-strip{margin-top:18px; display:flex; gap:10px; align-items:center; justify-content:center; padding:12px; border-radius:12px; background:linear-gradient(90deg, rgba(42,198,255,0.04), rgba(46,230,200,0.03)); border:1px solid rgba(255,255,255,0.02)}
+    .small-note{font-size:0.92rem; color:var(--muted-2)}
+
+    /* dashboard preview */
+    .grid-2{display:grid; gap:14px; grid-template-columns: 1fr 420px; align-items:start}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:12px; box-shadow:var(--card-shadow); border:1px solid rgba(255,255,255,0.02)}
+
+    .calc-row{display:flex; gap:10px; align-items:center}
+    .input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)}
+
+    /* subtle floating badges */
+    .badge{position:absolute; right:28px; top:140px; background:linear-gradient(90deg,var(--accent-a),var(--accent-b)); padding:8px 12px; border-radius:999px; font-weight:800; box-shadow:0 10px 30px rgba(42,198,255,0.08)}
+
+    footer{margin-top:28px;padding:22px;border-radius:12px;background:rgba(255,255,255,0.02);text-align:center;font-size:0.92rem;color:var(--muted-2)}
+
+    /* Desktop hero two-col */
+    @media(min-width: var(--mobile-break)){
+      header.hero{ grid-template-columns: 1fr 520px; gap:28px; align-items:center; padding-top:80px }
+      .hero-inner{align-items:flex-start;text-align:left}
+      .hero-cta{justify-content:flex-start}
+      .hero-media{margin-top:0}
+      .wrap{padding:36px}
+    }
+
+    /* Mobile nav & layout */
+    .mobile-menu{display:none;position:fixed;inset:0;z-index:80;padding:24px;background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.75));backdrop-filter:blur(6px);align-items:center;justify-content:center;flex-direction:column}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{font-size:1.2rem;margin:12px 0;color:white;font-weight:700}
+
+    @media(max-width: calc(var(--mobile-break) - 1px)){
+      .nav-links{display:none}
+      .hamburger{display:inline-flex}
+      nav{padding:10px 14px}
+      .wrap{padding:16px}
+      .grid-2{grid-template-columns: 1fr}
+    }
+
+    /* small interactions */
+    .fade-in{opacity:0; transform:translateY(10px); transition:opacity .55s ease, transform .55s cubic-bezier(.2,.9,.2,1)}
+    .fade-in.show{opacity:1; transform:none}
+
+    /* accessible focus */
+    [tabindex]:focus{outline:3px solid rgba(42,198,255,0.12); outline-offset:3px}
+  </style>
+</head>
+<body>
+  <nav role="navigation" aria-label="Main navigation">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">🌿</div>
+      <div>
+        <div style="font-weight:900">CarbonChainX</div>
+        <div style="font-size:0.78rem; color:rgba(255,255,255,0.72); margin-top:2px">AI • Track • Offset</div>
+      </div>
+    </div>
+
+    <div class="nav-links" role="menubar" aria-hidden="false">
+      <a href="#features" role="menuitem">Features</a>
+      <a href="#how" role="menuitem">How it Works</a>
+      <a href="#dashboard" role="menuitem">Dashboard</a>
+      <a href="#contact" role="menuitem">Contact</a>
+    </div>
+
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn ghost" onclick="demoTheme()" title="Toggle demo theme">🌗 Demo</button>
+      <button class="hamburger" id="btnMenu" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu"><i class="fa fa-bars"></i></button>
+    </div>
+  </nav>
+
+  <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
+    <a href="#features" onclick="closeMenu()">Features</a>
+    <a href="#how" onclick="closeMenu()">How it Works</a>
+    <a href="#dashboard" onclick="closeMenu()">Dashboard</a>
+    <a href="#contact" onclick="closeMenu()">Contact</a>
+    <div style="margin-top:18px">
+      <button class="btn" style="width:180px" onclick="closeMenu()">🚀 Get Started</button>
+    </div>
+  </div>
+
+  <main class="wrap" id="top">
+    <header class="hero" role="banner">
+      <div class="hero-inner" id="heroInner" data-visible="false" aria-labelledby="heroTitle">
+        <div class="hero-eyebrow">Make greener choices • Reduce your footprint</div>
+
+        <h1 id="heroTitle" class="hero-title">Track • Reduce • Offset Carbon — effortlessly.</h1>
+
+        <p class="hero-sub">CarbonChainX helps individuals and small businesses measure emissions, get AI-driven reduction suggestions, and offset residual impact with trusted credits. Start with a 60‑second setup and get actionable tips today.</p>
+
+        <div class="hero-cta" role="region" aria-label="Call to action">
+          <button class="btn" onclick="ctaGetStarted()">🚀 Get Started</button>
+          <button class="btn secondary" onclick="ctaLogin()">🔐 Login</button>
+          <button class="btn ghost" onclick="ctaDemo()">📈 Live demo</button>
+        </div>
+
+        <div class="features fade-in" id="features" aria-label="Key features">
+          <div class="card" tabindex="0">
+            <div class="ico">🌱</div>
+            <div>
+              <h4>Instant Tracking</h4>
+              <p>Log transport, energy & food habits — quick presets and NFC receipts supported.</p>
+            </div>
+          </div>
+
+          <div class="card" tabindex="0">
+            <div class="ico">🤖</div>
+            <div>
+              <h4>AI Suggestions</h4>
+              <p>Personalized, high-impact tips with estimated CO₂ & cost savings.</p>
+            </div>
+          </div>
+
+          <div class="card" tabindex="0">
+            <div class="ico">📊</div>
+            <div>
+              <h4>Interactive Dashboard</h4>
+              <p>Visualize weekly goals, trends & compare with community baselines.</p>
+            </div>
+          </div>
+
+          <div class="card" tabindex="0">
+            <div class="ico">🌍</div>
+            <div>
+              <h4>Offset & Support</h4>
+              <p>Connect to verified carbon projects and track your impact certificate.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cta-strip" style="margin-top:12px">
+          <div class="small-note">Join CarbonChainX — first 1000 signups get premium AI tips free for 3 months.</div>
+        </div>
+      </div>
+
+      <aside class="hero-media" aria-hidden="false" role="img" aria-label="Illustration: person planting tree">
+        <div style="position:relative;width:100%;max-width:520px">
+          <picture>
+            <source type="image/webp" srcset="https://assets10.lottiefiles.com/temp/lf20_thumb.webp">
+            <img alt="Planting tree illustration" src="https://assets10.lottiefiles.com/temp/lf20_thumb.png" style="width:100%;border-radius:12px;display:block;object-fit:cover" loading="lazy">
+          </picture>
+
+          <lottie-player
+            class="lottie"
+            src="https://assets5.lottiefiles.com/packages/lf20_jcikwtux.json"
+            background="transparent"
+            speed="1"
+            style="width:100%;height:420px;position:absolute;top:0;left:0"
+            loop autoplay
+            aria-hidden="true"
+            ></lottie-player>
+
+          <div class="badge" role="status" aria-live="polite">Est. saving: <strong id="badgeSave">—</strong></div>
+        </div>
+      </aside>
+    </header>
+
+    <section id="how" style="margin-top:18px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); box-shadow:var(--card-shadow)">
+      <div style="display:flex; gap:18px; flex-direction:column; align-items:flex-start">
+        <h3 style="margin:0 0 6px 0;font-size:1.05rem">How CarbonChainX works</h3>
+        <p style="margin:0;color:var(--muted-2)">Simple three steps: <strong>Log • Learn • Lower</strong>. Use quick presets, get AI action plans, and track your saved CO₂ over time.</p>
+      </div>
+    </section>
+
+    <section id="dashboard" style="margin-top:18px; display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div class="panel">
+        <h4 style="margin:0 0 8px 0">Quick calculator</h4>
+        <p style="margin:0 0 12px 0; font-size:0.95rem;color:var(--muted-2)">Estimate a trip — now with selectable vehicle types and live tips.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <select id="vehicleType" class="input" style="max-width:160px">
+            <option value="car">Car (avg petrol)</option>
+            <option value="bike">Bike</option>
+            <option value="bus">Bus</option>
+            <option value="train">Train</option>
+            <option value="flight">Flight (short)</option>
+          </select>
+
+          <input id="demoKm" type="number" inputmode="numeric" placeholder="km driven" class="input" style="min-width:140px" />
+
+          <button class="btn" onclick="quickCalc()">Calculate</button>
+        </div>
+        <div id="demoResult" style="margin-top:12px;font-weight:800;color:var(--accent-b)"></div>
+      </div>
+
+      <div class="panel">
+        <h4 style="margin:0 0 8px 0">AI tip example</h4>
+        <p style="margin:0 0 12px 0;font-size:0.95rem;color:var(--muted-2)">Based on inputs, AI suggests the highest-impact change first.</p>
+        <div style="display:flex;gap:8px;flex-direction:column">
+          <div style="padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);">💡 Try switching 2 meat meals / week → saves ~<strong id="tipA">2.4</strong> kg CO₂</div>
+          <div style="padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);">🚌 Carpool or bus 3×/week → saves ~<strong id="tipB">6.1</strong> kg CO₂</div>
+          <div style="padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);">💡 Switch to LED lighting → saves energy & money long-term</div>
+        </div>
+      </div>
+
+      <div class="panel" style="grid-column:1 / -1; display:flex;gap:12px;flex-direction:column">
+        <h4 style="margin:0 0 8px 0">Monthly snapshot (demo)</h4>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);">📈 Trend: <strong>−9% this month</strong></div>
+          <div style="flex:1;min-width:220px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);">🏅 Goal progress: <strong>42%</strong></div>
+          <div style="flex:1;min-width:220px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);">🌱 Offset credits purchased: <strong>0.0 t</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;justify-content:center">
+        <div>© 2025 CarbonChainX — Built for a sustainable future 🌱</div>
+        <div style="font-size:0.88rem;color:rgba(255,255,255,0.6)">Made with ♥ by Anand. <a href="mailto:you@example.com" style="color:var(--accent-a)">Contact</a></div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // small accessibility + entrance animations
+    document.addEventListener('DOMContentLoaded', () => {
+      requestAnimationFrame(() => {
+        const hero = document.getElementById('heroInner');
+        hero.setAttribute('data-visible','true');
+        document.querySelectorAll('.fade-in').forEach((el,i) => setTimeout(()=> el.classList.add('show'), 120*i));
+      });
+
+      // set demo badge
+      document.getElementById('badgeSave').innerText = '—';
+    });
+
+    // mobile menu toggles
+    const btn = document.getElementById('btnMenu');
+    const menu = document.getElementById('mobileMenu');
+    function toggleMenu(){
+      const open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    function closeMenu(){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); menu.setAttribute('aria-hidden','true'); }
+    btn.addEventListener('click', toggleMenu);
+    window.addEventListener('keydown', e => { if(e.key === 'Escape') closeMenu() });
+
+    // CTA placeholders
+    function ctaGetStarted(){ alert('Get Started → Signup flow coming soon 👍'); }
+    function ctaLogin(){ alert('Login → Auth flow coming soon 🔐'); }
+    function ctaDemo(){ alert('Demo → Interactive demo coming soon 📊'); }
+
+    // Quick calculator (improved factors)
+    function quickCalc(){
+      const km = parseFloat(document.getElementById('demoKm').value || 0);
+      const type = document.getElementById('vehicleType').value;
+      if(!km){ const r = document.getElementById('demoResult'); r.innerText = 'Enter km to calculate'; r.style.color='rgba(255,255,255,0.8)'; return; }
+
+      // realistic-ish emission factors (kg CO2 per km)
+      const factors = {
+        car: 0.192,    // average car
+        bike: 0.040,   // motorcycle
+        bus: 0.089,    // average bus per passenger
+        train: 0.041,  // regional train per passenger
+        flight: 0.255  // short flight per passenger km (approx)
+      };
+
+      const factor = factors[type] || 0.192;
+      const kg = +(km * factor).toFixed(2);
+      const result = document.getElementById('demoResult');
+      result.innerText = kg + ' kg CO₂ (approx)';
+      result.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent-a') || '#2fe6c8';
+
+      // update badge + tips roughly
+      document.getElementById('badgeSave').innerText = kg + ' kg';
+      const tipA = +( (kg * 0.12).toFixed(2) );
+      const tipB = +( (kg * 0.28).toFixed(2) );
+      document.getElementById('tipA').innerText = tipA;
+      document.getElementById('tipB').innerText = tipB;
+    }
+
+    // demo theme toggle — small visual change to show dynamic styles
+    function demoTheme(){
+      const root = document.documentElement;
+      if(root.style.getPropertyValue('--bg-1') === ' #071018'){
+        // quick invert-ish demo
+        root.style.setProperty('--bg-1','#041016');
+        root.style.setProperty('--bg-2','#042b1f');
+      } else {
+        root.style.setProperty('--bg-1','#071018');
+        root.style.setProperty('--bg-2','#082034');
+      }
+    }
+  </script>
+</body>
+</html>
